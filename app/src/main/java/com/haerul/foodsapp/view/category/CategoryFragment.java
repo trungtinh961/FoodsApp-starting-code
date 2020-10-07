@@ -35,6 +35,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.haerul.foodsapp.view.home.HomeActivity.EXTRA_DETAIL;
+
 public class CategoryFragment extends Fragment implements CategoryView {
 
     @BindView(R.id.recyclerView) 

@@ -25,22 +25,22 @@ public class DetailPresenter {
     void getMealById(String mealName) {
         view.showLoading();
         Utils.getApi().getMealByName(mealName)
-                .enqueue(new Call<Meals>() {
-                   @Override
-                   public void onResponse(@NonNull Call<Meals> call, @NonNull Response<Meals> response) {
-                       view.hideLoading();
-                       if (response.isSuccessful() && response.body() != null) {
-                           view.setMeal(response.body().getMeals().get(0));
-                       } else {
-                           view.onErrorLoading(response.message());
-                       }
-                   }
+                .enqueue(new Callback<Meals>() {
+                    @Override
+                    public void onResponse(Call<Meals> call, Response<Meals> response) {
+                        view.hideLoading();
+                        if (response.isSuccessful() && response.body() != null) {
+                            view.setMeal(response.body().getMeals().get(0));
+                        } else {
+                            view.onErrorLoading(response.message());
+                        }
+                    }
 
-                   @Override
-                   public void onFailure(@NonNull Call<Meals> call, @NonNull Throwable t) {
-                       view.hideLoading();
-                       view.onErrorLoading(t.getLocalizedMessage());
-                   }
+                    @Override
+                    public void onFailure(Call<Meals> call, Throwable t) {
+                        view.hideLoading();
+                        view.onErrorLoading(t.getLocalizedMessage());
+                    }
                 });
     }
 }

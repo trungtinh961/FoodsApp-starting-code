@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         viewPagerMeal.setPadding(20, 0, 150, 0);
         headerAdapter.notifyDataSetChanged();
 
-        headerAdapter.setOnItemClickListener((v, position) -> {
+        headerAdapter.setOnItemClickListener((view, position) -> {
             TextView mealName = view.findViewById(R.id.mealName);
             Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
             intent.putExtra(EXTRA_DETAIL,mealName.getText().toString());
