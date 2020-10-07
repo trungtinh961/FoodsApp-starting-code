@@ -16,6 +16,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +34,7 @@ import butterknife.ButterKnife;
 
 import static com.haerul.foodsapp.view.home.HomeActivity.EXTRA_DETAIL;
 
-public class DetailActivity extends AppCompatActivity { //TODO #11  implement DetailView
+public class DetailActivity extends AppCompatActivity implements DetailView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -76,13 +77,11 @@ public class DetailActivity extends AppCompatActivity { //TODO #11  implement De
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-
         setupActionBar();
-        
-        //TODO #9 Get data from the intent
-
-        //TODO #10 Declare the presenter (put the name of the meal name from the data intent to the presenter)
-        
+        Intent intent = getIntent();
+        String mealName = intent.getStringExtra(EXTRA_DETAIL);
+        DetailPresenter presenter = new DetailPresenter(this);
+        presenter.getMealById(mealName);
     }
 
     private void setupActionBar() {
@@ -132,4 +131,23 @@ public class DetailActivity extends AppCompatActivity { //TODO #11  implement De
         }
     }
 
+    @Override
+    public void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void setMeal(Meals.Meal meal) {
+        Log.w("TAG", meal.getStrMeal());
+    }
+
+    @Override
+    public void onErrorLoading(String message) {
+        Utils.showDialogMessage(this, "Error", message);
+    }
 }
