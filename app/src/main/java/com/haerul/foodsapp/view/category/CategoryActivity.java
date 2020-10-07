@@ -26,23 +26,38 @@ import butterknife.ButterKnife;
 
 public class CategoryActivity extends AppCompatActivity {
 
-    //TODO 4. Annotate fields with @BindView and a view ID
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.tabLayout)
+    TabLayout tabLayout;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
-        //TODO 5. Bind ButterKnife
+        ButterKnife.bind(this);
+
 
         initActionBar();
-        
-        //TODO 9. Init getIntent() data from home activity
-        
-        //TODO 11. Declare fragment viewPager adapter
+        initIntent();
+
+    }
+
+    private void initIntent() {
+        Intent intent = getIntent();
+        List<Categories.Category> categories = (List<Categories.Category>) intent.getSerializableExtra(HomeActivity.EXTRA_CATEGORY);
+        int position = intent.getIntExtra(HomeActivity.EXTRA_POSITION, 0);
+        ViewPagerCategoryAdapter adapter = new ViewPagerCategoryAdapter(getSupportFragmentManager(), categories);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(position, true);
+        adapter.notifyDataSetChanged();
     }
 
     private void initActionBar() {
-        setSupportActionBar(null);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
